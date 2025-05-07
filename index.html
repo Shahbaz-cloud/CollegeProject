@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LifeLink - Blood Donation & Emergency Locator</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Add some basic styling for the user profile section */
+        .user-profile {
+            display: none; /* Hidden by default */
+            align-items: center;
+            gap: 15px; /* Space between email and logout button */
+        }
+
+        .user-email {
+            font-weight: bold;
+            color: #333; /* Or a color that fits your design */
+        }
+
+        .logout-button {
+            background-color: #f44336; /* Red color for logout */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        .logout-button:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Ensure auth-buttons and user-profile are in the same layout context */
+        .auth-buttons,
+        .user-profile {
+            display: flex; /* Use flexbox for alignment */
+            align-items: center;
+        }
+
+        /* Initially hide user-profile */
+        .user-profile {
+             display: none;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="nav-container">
+        <nav>
+            <div class="logo">
+                <div class="drop">❤️</div>
+                <div class="logo-text">Life<span>Link</span></div>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="#">Home</a>
+                    <p>Welcome to the LifeLink home page. Find blood donors quickly and easily.</p>
+                </li>
+                <li class="nav-item">
+                    <a href="aboutus.html">About Us</a>
+                    <p>We connect donors with recipients and support emergency medical needs.</p>
+                </li>
+                <li class="nav-item">
+                    <a href="Donation.html">Donations</a>
+                    <p>View or manage blood donations and help save lives.</p>
+                </li>
+                <!-- <li class="nav-item">
+                    <a href="emergency.html">Emergency</a>
+                    <p>In an emergency? Find the nearest donor or hospital right now.</p>
+                </li> -->
+                <li class="nav-item">
+                    <a href="contactus.html">Contact</a>
+                    <p>Reach out to us for help or support anytime.</p>
+                </li>
+            </ul>
+            <div class="auth-section">
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" onclick="openModal('loginModal')">Login</button>
+                    <button class="btn btn-primary" onclick="openModal('registerModal')">Register</button>
+                </div>
+                <div class="user-profile" id="user-profile">
+                    <span class="user-email" id="user-email"></span>
+                    <button class="logout-button" id="logout-button">Logout</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <section class="hero">
+        <div class="floating-elements">
+            <div class="floating-element element-1"></div>
+            <div class="floating-element element-2"></div>
+            <div class="floating-element element-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Donate Blood, <span>Save Lives</span></h1>
+                <p class="hero-subtitle">Join our community of blood donors and help save lives during emergencies. Your
+                    donation can be the difference between life and death for someone in need.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary btn-large" type="submit" id="donateBtn">Donate Now</button>
+                    <button class="btn btn-outline btn-large" type="submit" id="requestBtn">Request Blood</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/008/191/708/small/human-blood-donate-and-heart-rate-on-white-background-free-vector.jpg"
+                    alt="Blood donation illustration">
+                <div class="pulse pulse-1"></div>
+                <div class="pulse pulse-2"></div>
+                <div class="pulse pulse-3"></div>
+            </div>
+        </div>
+        <div class="emergency-card">
+            <div class="emergency-section">
+                <h2 class="section-title">Need Blood Urgently?</h2>
+                <p>Select blood type required and find donors nearby</p>
+                <div class="blood-type-grid">
+                    <div class="blood-type">A+</div>
+                    <div class="blood-type">A-</div>
+                    <div class="blood-type">B+</div>
+                    <div class="blood-type">B-</div>
+                    <div class="blood-type">AB+</div>
+                    <div class="blood-type">AB-</div>
+                    <div class="blood-type">O+</div>
+                    <div class="blood-type">O-</div>
+                </div>
+                <div class="blood-actions">
+                    <button class="btn btn-primary" onclick="requestBlood()">Request Blood</button>
+                </div>
+            </div>
+            <div class="emergency-section">
+                <h2 class="section-title">Emergency Locator</h2>
+                <p>Find nearby blood banks and hospitals for immediate assistance</p>
+                <div class="location-search">
+                    <input type="text" id="locationInput" placeholder="Enter your location">
+                    <button onclick="searchNearby()">Search</button>
+                </div>
+
+                <div id="map"></div>
+                <div id="searchResults"></div>
+                <div class="blood-actions">
+                    <button class="btn btn-outline" id="viewBloodBankBtn">View Blood Banks</button>
+                </div>
+                <div id="bloodBanksList"></div>
+            </div>
+        </div>
+    </section>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
+            <h2 class="modal-title">Login to Your Account</h2>
+            <form>
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" class="form-control" id="login-email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" class="form-control" id="login-password" placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Login</button>
+            </form>
+            <div class="modal-footer">
+                <p>Don't have an account? <a href="#" onclick="switchModal('loginModal', 'registerModal')">Register
+                        Now</a></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
+            <h2 class="modal-title">Create an Account</h2>
+            <form>
+                <div class="form-group">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" class="form-control" id="register-name" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email Address</label>
+                    <input type="email" class="form-control" id="register-email" placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" class="form-control" id="register-password" placeholder="Create a password">
+                </div>
+                <div class="form-group">
+                    <label for="register-blood">Blood Type</label>
+                    <select class="form-control" id="register-blood">
+                        <option value="">Select your blood type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+            </form>
+            <div class="modal-footer">
+                <p>Already have an account? <a href="#" onclick="switchModal('registerModal', 'loginModal')">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div id="donateModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('donateModal')">&times;</span>
+            <h2 class="modal-title">Donate Blood</h2>
+            <form>
+                <div class="form-group">
+                    <label for="donate-name">Full Name</label>
+                    <input type="text" class="form-control" id="donate-name" placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="donate-blood">Blood Type</label>
+                    <select class="form-control" id="donate-blood">
+                        <option value="">Select your blood type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="donate-location">Your Location</label>
+                    <input type="text" class="form-control" id="donate-location" placeholder="Enter your city">
+                </div>
+                <div class="form-group">
+                    <label for="donate-date">Preferred Donation Date</label>
+                    <input type="date" class="form-control" id="donate-date">
+                </div>
+
+                <div class="form-group">
+                    <label for="donate-number">Contact</label>
+                    <input type="text" class="form-control" id="donate-number" placeholder="Enter your contact number">
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Donation</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('requestModal')">&times;</span>
+            <h2 class="modal-title">Request Blood</h2>
+            <form>
+                <div class="form-group">
+                    <label for="request-name">Patient Name</label>
+                    <input type="text" class="form-control" id="request-name" placeholder="Enter patient name">
+                </div>
+                <div class="form-group">
+                    <label for="request-blood">Blood Type Needed</label>
+                    <select class="form-control" id="request-blood">
+                        <option value="">Select blood type</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="request-location">Hospital Location</label>
+                    <input type="text" class="form-control" id="request-location"
+                        placeholder="Enter hospital name and address">
+                </div>
+                <div class="form-group">
+                    <label for="request-units">Units Required</label>
+                    <input type="number" class="form-control" id="request-units" min="1" value="1">
+                </div>
+                <div class="form-group">
+                    <label for="request-urgency">Urgency Level</label>
+                    <select class="form-control" id="request-urgency">
+                        <option value="normal">Normal</option>
+                        <option value="urgent">Urgent</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Request</button>
+            </form>
+        </div>
+
+    </div>
+    <footer class="footer-section">
+        <div class="footer-container">
+            <div class="footer-row">
+                <div class="footer-col">
+                    <div class="footer-logo">
+                        <div class="drop">❤️</div>
+                        <div class="logo-text">Life<span>Link</span></div>
+                    </div>
+                    <p class="footer-description">Connecting blood donors with those in need, saving lives one donation
+                        at a time.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fa fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Donations</a></li>
+                        <li><a href="#">Emergency</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Donate Blood</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">How to Donate</a></li>
+                        <li><a href="#">Eligibility</a></li>
+                        <li><a href="#">Donation Process</a></li>
+                        <li><a href="#">Find Donation Centers</a></li>
+                        <li><a href="#">Organize Blood Drive</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-heading">Contact Us</h3>
+                    <ul class="contact-info">
+                        <li><i class="fa fa-map-marker"></i> 123 Medical Center Drive, City, State</li>
+                        <li><i class="fa fa-phone"></i> +1 (555) 123-4567</li>
+                        <li><i class="fa fa-envelope"></i> info@lifelink.org</li>
+                    </ul>
+                    <div class="newsletter">
+                        <h4>Subscribe to Newsletter</h4>
+                        <div class="newsletter-form">
+                            <input type="email" placeholder="Enter your email">
+                            <button type="submit">Subscribe</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 LifeLink. All rights reserved.</p>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                    <a href="#">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="chatbot-container" id="chatbotContainer">
+        <div class="chat-header">LifeLink Assistant <span onclick="toggleChat()" class="close-chat">✖</span></div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Ask something..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <button class="chatbot-toggle" onclick="toggleChat()">💬</button>
+
+
+    <button class="chatbot-toggle" onclick="toggleChat()">💬</button>
+
+
+    <script src="index.js"></script>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</body>
+</html>
