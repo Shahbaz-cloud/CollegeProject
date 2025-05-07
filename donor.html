@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Donor List</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e53e3e;
+            --primary-dark: #c53030;
+            --secondary-color: #4a5568;
+            --light-gray: #edf2f7;
+            --dark-gray: #2d3748;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --inactive: #a0aec0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7fafc;
+            color: var(--dark-gray);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .page-title {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .blood-type-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .blood-type-badge i {
+            margin-right: 8px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            min-width: 250px;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+        }
+
+        .sort-by {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-by label {
+            font-weight: 500;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #3d4a5f;
+        }
+
+        .donor-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .donor-table th, 
+        .donor-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .donor-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .donor-table th:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .donor-table th i {
+            margin-left: 5px;
+        }
+
+        .donor-table tbody tr:hover {
+            background-color: var(--light-gray);
+        }
+
+        .donor-status {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-active {
+            background-color: var(--success);
+        }
+
+        .status-inactive {
+            background-color: var(--inactive);
+        }
+
+        .status-busy {
+            background-color: var(--warning);
+        }
+
+        .donor-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--secondary-color);
+            transition: color 0.2s;
+        }
+
+        .action-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .action-btn.contact {
+            color: #4299e1;
+        }
+
+        .action-btn.contact:hover {
+            color: #2b6cb0;
+        }
+
+        .action-btn.toggle-active {
+            color: var(--success);
+        }
+
+        .action-btn.toggle-active:hover {
+            color: #2f855a;
+        }
+
+        .action-btn.toggle-inactive {
+            color: var(--inactive);
+        }
+
+        .action-btn.toggle-inactive:hover {
+            color: #718096;
+        }
+
+        .no-donors {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: #718096;
+            font-size: 18px;
+        }
+
+        .no-donors i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--inactive);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-color);
+        }
+
+        /* Contact Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .modal-title {
+            font-size: 22px;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .close-modal {
+            font-size: 24px;
+            font-weight: bold;
+            color: #718096;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .close-modal:hover {
+            color: var(--dark-gray);
+        }
+
+        .donor-details {
+            margin-bottom: 20px;
+        }
+
+        .donor-details h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .donor-details p {
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        .donor-details p strong {
+            color: var(--dark-gray);
+            margin-right: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header, .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-filter {
+                width: 100%;
+            }
+
+            .search-box, .filter-select {
+                width: 100%;
+            }
+
+            .sort-by {
+                margin-top: 15px;
+            }
+
+            .donor-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .donor-actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1 class="page-title">Matching Blood Donors</h1>
+            <div class="blood-type-badge">
+                <i class="fas fa-tint"></i>
+                <span id="selectedBloodType">A+</span>
+            </div>
+        </header>
+
+        <div class="controls">
+            <div class="search-filter">
+                <input type="text" id="searchDonors" class="search-box" placeholder="Search by name or location...">
+                <select id="statusFilter" class="filter-select">
+                    <option value="all">All Statuses</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="busy">Busy</option>
+                </select>
+                <select id="distanceFilter" class="filter-select">
+                    <option value="all">All Distances</option>
+                    <option value="near">< 5 miles</option>
+                    <option value="medium">5-10 miles</option>
+                    <option value="far">> 10 miles</option>
+                </select>
+            </div>
+            <div class="sort-by">
+                <label>Sort by:</label>
+                <select id="sortCriteria" class="filter-select">
+                    <option value="name">Name</option>
+                    <option value="distance">Distance</option>
+                    <option value="status">Status</option>
+                </select>
+            </div>
+        </div>
+
+        <table class="donor-table" id="donorTable">
+            <thead>
+                <tr>
+                    <th data-sort="name">Name <i class="fas fa-sort"></i></th>
+                    <th data-sort="location">Location <i class="fas fa-sort"></i></th>
+                    <th data-sort="distance">Distance <i class="fas fa-sort"></i></th>
+                    <th data-sort="status">Status <i class="fas fa-sort"></i></th>
+                    <th>Contact</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Donor rows will be inserted here -->
+            </tbody>
+        </table>
+
+        <div class="no-donors" id="noDonors" style="display: none;">
+            <i class="fas fa-search"></i>
+            <p>No matching donors found for this blood type.</p>
+            <p>Please try different search criteria or check back later.</p>
+        </div>
+
+        <a href="index.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to Blood Request
+        </a>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Contact Donor</h3>
+                <span class="close-modal" id="closeContactModal">&times;</span>
+            </div>
+            <div class="donor-details" id="contactDonorInfo">
+                <!-- Donor details will be displayed here -->
+            </div>
+            <div class="form-group">
+                <label for="message">Your Message:</label>
+                <textarea id="message" class="form-control" placeholder="Describe your need and any additional information"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelContactBtn" class="btn btn-secondary">Cancel</button>
+                <button id="sendMessageBtn" class="btn btn-primary">Send Message</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Change Modal -->
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Change Donor Status</h3>
+                <span class="close-modal" id="closeStatusModal">&times;</span>
+            </div>
+            <div class="donor-details" id="statusDonorInfo">
+                <!-- Donor details will be displayed here -->
+            </div>
+            <div class="form-group">
+                <label for="statusSelect">New Status:</label>
+                <select id="statusSelect" class="form-control">
+                    <option value="active">Active - Available to donate</option>
+                    <option value="inactive">Inactive - Not available</option>
+                    <option value="busy">Busy - Available later</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="statusNote">Status Note (optional):</label>
+                <textarea id="statusNote" class="form-control" placeholder="Add a note about your status change"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="cancelStatusBtn" class="btn btn-secondary">Cancel</button>
+                <button id="saveStatusBtn" class="btn btn-primary">Save Status</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Get blood type from URL or localStorage
+            const urlParams = new URLSearchParams(window.location.search);
+            const bloodType = urlParams.get('bloodType') || 'Unknown';
+            
+            // Update blood type display
+            document.getElementById("selectedBloodType").textContent = bloodType;
+            
+            // Try to get donors from localStorage
+            let donors = JSON.parse(localStorage.getItem("matchedDonors")) || [];
+            
+            // If no donors in localStorage, use sample data for demo purposes
+            if (!donors || donors.length === 0) {
+                // Sample donor data - in a real app, this would come from a server
+                donors = [
+                    { id: 1, name: "John Smith", location: "New York Medical Center", number: "555-123-4567", distance: 2.3, status: "active" },
+                    { id: 2, name: "Maria Garcia", location: "Downtown Hospital", number: "555-234-5678", distance: 4.1, status: "active" },
+                    { id: 3, name: "Robert Chen", location: "Uptown Medical", number: "555-345-6789", distance: 5.8, status: "inactive" },
+                    { id: 4, name: "Sarah Johnson", location: "Westside Health", number: "555-456-7890", distance: 3.7, status: "busy" },
+                    { id: 5, name: "James Wilson", location: "Eastside Clinic", number: "555-567-8901", distance: 7.2, status: "active" },
+                    { id: 6, name: "Olivia Brown", location: "Central Hospital", number: "555-678-9012", distance: 9.5, status: "inactive" },
+                    { id: 7, name: "David Lee", location: "North Medical Center", number: "555-789-0123", distance: 11.3, status: "active" }
+                ];
+            }
+            
+            // Add status to donors if they don't have it
+            donors = donors.map(donor => {
+                if (!donor.status) {
+                    donor.status = "active"; // Default status
+                }
+                if (!donor.distance && donor.distance !== 0) {
+                    donor.distance = Math.floor(Math.random() * 15) + 1; // Random distance for demo
+                }
+                return donor;
+            });
+
+            const tableBody = document.querySelector("#donorTable tbody");
+            const noDonorsMessage = document.getElementById("noDonors");
+            const donorTable = document.getElementById("donorTable");
+            let currentDonors = [...donors];
+            let sortDirection = "asc";
+            let currentSortColumn = "name";
+
+            // Function to display donors
+            function displayDonors(donorsToDisplay) {
+                tableBody.innerHTML = "";
+                
+                if (!donorsToDisplay || donorsToDisplay.length === 0) {
+                    donorTable.style.display = "none";
+                    noDonorsMessage.style.display = "block";
+                    return;
+                }
+                
+                donorTable.style.display = "table";
+                noDonorsMessage.style.display = "none";
+                
+                donorsToDisplay.forEach(donor => {
+                    const row = document.createElement("tr");
+                    
+                    // Status class and icon
+                    let statusClass = "status-active";
+                    let statusText = "Active";
+                    
+                    if (donor.status === "inactive") {
+                        statusClass = "status-inactive";
+                        statusText = "Inactive";
+                    } else if (donor.status === "busy") {
+                        statusClass = "status-busy";
+                        statusText = "Busy";
+                    }
+                    
+                    row.innerHTML = `
+                        <td>${donor.name}</td>
+                        <td>${donor.location}</td>
+                        <td>${donor.distance ? donor.distance.toFixed(1) + " miles" : "Unknown"}</td>
+                        <td><span class="donor-status ${statusClass}"></span>${statusText}</td>
+                        <td>${donor.number}</td>
+                        <td class="donor-actions">
+                            <button class="action-btn contact" data-id="${donor.id}" title="Contact Donor">
+                                <i class="fas fa-envelope"></i>
+                            </button>
+                            <button class="action-btn toggle-${donor.status === "active" ? "active" : "inactive"}" data-id="${donor.id}" title="Change Status">
+                                <i class="fas fa-${donor.status === "active" ? "toggle-on" : "toggle-off"}"></i>
+                            </button>
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+                
+                // Add event listeners for action buttons
+                document.querySelectorAll(".action-btn.contact").forEach(button => {
+                    button.addEventListener("click", function() {
+                        const donorId = parseInt(this.getAttribute("data-id"));
+                        openContactModal(donorId);
+                    });
+                });
+                
+                document.querySelectorAll(".action-btn.toggle-active, .action-btn.toggle-inactive").forEach(button => {
+                    button.addEventListener("click", function() {
+                        const donorId = parseInt(this.getAttribute("data-id"));
+                        openStatusModal(donorId);
+                    });
+                });
+            }
+
+            // Sort donors
+            function sortDonors(donors, column, direction) {
+                return [...donors].sort((a, b) => {
+                    if (column === "distance") {
+                        return direction === "asc" ? a.distance - b.distance : b.distance - a.distance;
+                    } else if (column === "status") {
+                        // Sort by status (active first, then busy, then inactive)
+                        const statusOrder = { "active": 1, "busy": 2, "inactive": 3 };
+                        return direction === "asc" 
+                            ? statusOrder[a.status] - statusOrder[b.status]
+                            : statusOrder[b.status] - statusOrder[a.status];
+                    } else {
+                        // Sort strings (name, location)
+                        const valueA = a[column].toLowerCase();
+                        const valueB = b[column].toLowerCase();
+                        
+                        if (valueA < valueB) return direction === "asc" ? -1 : 1;
+                        if (valueA > valueB) return direction === "asc" ? 1 : -1;
+                        return 0;
+                    }
+                });
+            }
+
+            // Filter donors
+            function filterDonors(donors) {
+                const searchTerm = document.getElementById("searchDonors").value.toLowerCase();
+                const statusFilter = document.getElementById("statusFilter").value;
+                const distanceFilter = document.getElementById("distanceFilter").value;
+                
+                return donors.filter(donor => {
+                    // Search filter
+                    const matchesSearch = searchTerm === "" || 
+                        donor.name.toLowerCase().includes(searchTerm) || 
+                        donor.location.toLowerCase().includes(searchTerm);
+                    
+                    // Status filter
+                    const matchesStatus = statusFilter === "all" || donor.status === statusFilter;
+                    
+                    // Distance filter
+                    let matchesDistance = true;
+                    if (distanceFilter === "near") {
+                        matchesDistance = donor.distance < 5;
+                    } else if (distanceFilter === "medium") {
+                        matchesDistance = donor.distance >= 5 && donor.distance <= 10;
+                    } else if (distanceFilter === "far") {
+                        matchesDistance = donor.distance > 10;
+                    }
+                    
+                    return matchesSearch && matchesStatus && matchesDistance;
+                });
+            }
+
+            // Contact modal functions
+            function openContactModal(donorId) {
+                const donor = donors.find(d => d.id === donorId);
+                if (!donor) return;
+                
+                document.getElementById("contactDonorInfo").innerHTML = `
+                    <h4>${donor.name}</h4>
+                    <p><strong>Blood Type:</strong> ${bloodType}</p>
+                    <p><strong>Location:</strong> ${donor.location}</p>
+                    <p><strong>Distance:</strong> ${donor.distance.toFixed(1)} miles</p>
+                    <p><strong>Contact:</strong> ${donor.number}</p>
+                    <p><strong>Status:</strong> ${donor.status.charAt(0).toUpperCase() + donor.status.slice(1)}</p>
+                `;
+                
+                document.getElementById("contactModal").style.display = "block";
+            }
+
+            // Status change modal functions
+            function openStatusModal(donorId) {
+                const donor = donors.find(d => d.id === donorId);
+                if (!donor) return;
+                
+                document.getElementById("statusDonorInfo").innerHTML = `
+                    <h4>${donor.name}</h4>
+                    <p><strong>Current Status:</strong> ${donor.status.charAt(0).toUpperCase() + donor.status.slice(1)}</p>
+                `;
+                
+                document.getElementById("statusSelect").value = donor.status;
+                document.getElementById("statusModal").style.display = "block";
+                
+                // Store the current donor ID for the save function
+                document.getElementById("saveStatusBtn").setAttribute("data-donor-id", donorId);
+            }
+
+            // Save status change
+            function saveStatusChange() {
+                const donorId = parseInt(document.getElementById("saveStatusBtn").getAttribute("data-donor-id"));
+                const newStatus = document.getElementById("statusSelect").value;
+                const statusNote = document.getElementById("statusNote").value;
+                
+                const donorIndex = donors.findIndex(d => d.id === donorId);
+                if (donorIndex === -1) return;
+                
+                // Update donor status
+                donors[donorIndex].status = newStatus;
+                if (statusNote) {
+                    donors[donorIndex].statusNote = statusNote;
+                }
+                
+                // Update localStorage
+                localStorage.setItem("matchedDonors", JSON.stringify(donors));
+                
+                // Refresh the display
+                currentDonors = filterDonors(donors);
+                currentDonors = sortDonors(currentDonors, currentSortColumn, sortDirection);
+                displayDonors(currentDonors);
+                
+                // Close the modal
+                document.getElementById("statusModal").style.display = "none";
+                
+                // Show confirmation message
+                alert(`Donor status updated to ${newStatus}`);
+            }
+
+            // Send message to donor
+            function sendMessage() {
+                const message = document.getElementById("message").value;
+                
+                if (!message.trim()) {
+                    alert("Please enter a message");
+                    return;
+                }
+                
+                // In a real app, this would send the message to the server
+                // For demo, just show a success message
+                alert("Your message has been sent to the donor.\nThey will contact you shortly.");
+                
+                // Close the modal
+                document.getElementById("contactModal").style.display = "none";
+                
+                // Clear the message field
+                document.getElementById("message").value = "";
+            }
+
+            // Initial display
+            currentDonors = sortDonors(donors, "name", "asc");
+            displayDonors(currentDonors);
+
+            // Event listeners for search and filters
+            document.getElementById("searchDonors").addEventListener("input", function() {
+                currentDonors = filterDonors(donors);
+                currentDonors = sortDonors(currentDonors, currentSortColumn, sortDirection);
+                displayDonors(currentDonors);
+            });
+
+            document.getElementById("statusFilter").addEventListener("change", function() {
+                currentDonors = filterDonors(donors);
+                currentDonors = sortDonors(currentDonors, currentSortColumn, sortDirection);
+                displayDonors(currentDonors);
+            });
+
+            document.getElementById("distanceFilter").addEventListener("change", function() {
+                currentDonors = filterDonors(donors);
+                currentDonors = sortDonors(currentDonors, currentSortColumn, sortDirection);
+                displayDonors(currentDonors);
+            });
+
+            // Event listener for sort
+            document.getElementById("sortCriteria").addEventListener("change", function() {
+                currentSortColumn = this.value;
+                currentDonors = sortDonors(currentDonors, currentSortColumn, sortDirection);
+                displayDonors(currentDonors);
+            });
+
+            // Event listeners for table header sort
+            document.querySelectorAll("th[data-sort]").forEach(header => {
+                header.addEventListener("click", function() {
+                    const column = this.getAttribute("data-sort");
+                    
+                    // Toggle direction if same column, otherwise default to ascending
+                    if (column === currentSortColumn) {
+                        sortDirection = sortDirection === "asc" ? "desc" : "asc";
+                    } else {
+                        currentSortColumn = column;
+                        sortDirection = "asc";
+                    }
+                    
+                    // Update sort icon
+                    document.querySelectorAll("th i").forEach(icon => {
+                        icon.className = "fas fa-sort";
+                    });
+                    
+                    this.querySelector("i").className = `fas fa-sort-${sortDirection === "asc" ? "up" : "down"}`;
+                    
+                    // Sort and display
+                    currentDonors = sortDonors(currentDonors, currentSortColumn, sortDirection);
+                    displayDonors(currentDonors);
+                });
+            });
+
+            // Modal close buttons
+            document.getElementById("closeContactModal").addEventListener("click", function() {
+                document.getElementById("contactModal").style.display = "none";
+            });
+
+            document.getElementById("cancelContactBtn").addEventListener("click", function() {
+                document.getElementById("contactModal").style.display = "none";
+            });
+
+            document.getElementById("closeStatusModal").addEventListener("click", function() {
+                document.getElementById("statusModal").style.display = "none";
+            });
+
+            document.getElementById("cancelStatusBtn").addEventListener("click", function() {
+                document.getElementById("statusModal").style.display = "none";
+            });
+
+            // Send message button
+            document.getElementById("sendMessageBtn").addEventListener("click", sendMessage);
+
+            // Save status button
+            document.getElementById("saveStatusBtn").addEventListener("click", saveStatusChange);
+
+            // Close modals when clicking outside
+            window.addEventListener("click", function(event) {
+                if (event.target === document.getElementById("contactModal")) {
+                    document.getElementById("contactModal").style.display = "none";
+                }
+                if (event.target === document.getElementById("statusModal")) {
+                    document.getElementById("statusModal").style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

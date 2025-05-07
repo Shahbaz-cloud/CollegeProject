@@ -1,0 +1,1183 @@
+/* index.css */
+
+/* Variables for consistent styling */
+:root {
+    --primary-color: #e63946; /* Your defined red */
+    --primary-dark: #d62c3b; /* Darker red for hover */
+    --secondary-color: #3499db; /* Blue */
+    --accent-color: #2ecc71; /* Green */
+    --background-color: #f8f9fa; /* Light Gray */
+    --card-background: #ffffff; /* White */
+    --text-color-dark: #333;
+    --text-color-light: #f8f8f8; /* Near White */
+    --border-color: #ddd;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+
+    --font-family-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Your defined font */
+    --font-family-heading: 'Georgia', serif; /* Example heading font */
+
+    /* Animation durations */
+    --animation-duration: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--font-family-main); /* Use defined font variable */
+}
+
+body {
+    background-color: var(--background-color); /* Use variable */
+    color: var(--text-color-dark); /* Use variable */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color); /* Use variable */
+    transition: color var(--animation-duration) ease;
+}
+
+a:hover {
+    color: var(--primary-dark); /* Use darker variable */
+}
+
+ul {
+    list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-heading);
+    color: var(--text-color-dark); /* Use variable */
+    margin-bottom: 1rem;
+}
+
+button, input[type="submit"], .btn {
+    cursor: pointer;
+    font-family: inherit; /* Use body font */
+}
+
+/* Navigation Bar */
+.nav-container {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    backdrop-filter: blur(5px); /* Optional: Add slight blur to fixed header */
+    -webkit-backdrop-filter: blur(5px); /* For Safari */
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+/* Tooltip (Keeping your tooltip style as provided) */
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: max-content;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.drop {
+    color: var(--primary-color); /* Use variable */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-color-dark); /* Use variable */
+}
+
+.logo-text span {
+    color: var(--primary-color); /* Use variable */
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    flex-grow: 1; /* Allow nav links to take space */
+    justify-content: center; /* Center links when space allows */
+}
+
+.nav-links li {
+    position: relative; /* Needed for positioning the p tag */
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color-dark); /* Use variable */
+    font-weight: 500;
+    transition: color var(--animation-duration) ease;
+    padding: 10px 0; /* Add padding for click area */
+    display: inline-block;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color); /* Use variable */
+}
+
+.nav-item p {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position below the link */
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-background); /* Use variable */
+    padding: 10px;
+    border: 1px solid var(--border-color); /* Use variable */
+    border-radius: 5px;
+    width: max-content; /* Adjust width based on content */
+    min-width: 180px; /* Minimum width */
+    z-index: 100;
+    font-size: 0.9rem;
+    color: #666;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    pointer-events: none; /* Allow clicking through the tooltip */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-item:hover p {
+    display: block; /* Show on hover */
+    opacity: 1;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn {
+    padding: 0.6rem 1.2rem;
+    border-radius: 50px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--animation-duration) ease;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--primary-color); /* Use variable */
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark); /* Use variable */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(var(--primary-color-rgb), 0.3); /* Need to define RGB for shadow */
+}
+
+/* Define RGB for primary color for shadows */
+:root {
+    --primary-color-rgb: 230, 57, 70;
+}
+
+
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--primary-color); /* Use variable */
+    color: var(--primary-color); /* Use variable */
+}
+
+.btn-outline:hover {
+    background-color: var(--primary-color); /* Use variable */
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, rgba(252, 246, 246, 0.95), rgba(252, 232, 232, 0.9)), url('https://via.placeholder.com/1920x1080/ffebee/ffcdd2?text=Blood+Donation+Background') no-repeat center center; /* Placeholder with tint */
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-top: 100px; /* Add padding to account for fixed header */
+    overflow: hidden; /* Keep floating elements and pulses within bounds */
+}
+
+.hero-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    position: relative; /* Position relative for z-index */
+    z-index: 1; /* Bring content above floating elements/pulses */
+    flex-wrap: wrap; /* Allow wrapping */
+}
+
+.hero-text {
+    flex: 1;
+    min-width: 300px; /* Minimum width to prevent collapse */
+    padding-right: 2rem;
+}
+
+.hero-image {
+    flex: 1;
+    min-width: 300px; /* Minimum width to prevent collapse */
+    display: flex;
+    justify-content: center;
+    position: relative;
+    padding-left: 2rem;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+    display: block; /* Remove extra space below image */
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--text-color-dark); /* Use variable */
+    line-height: 1.2;
+}
+
+.hero-title span {
+    color: var(--primary-color); /* Use variable */
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap; /* Allow buttons to wrap */
+}
+
+.btn-large {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Emergency Card (positioned relative to the hero) */
+.emergency-card {
+    position: relative; /* Changed to relative to sit after hero */
+    margin-top: 4rem; /* Space between hero and card */
+    bottom: auto; /* Remove absolute positioning */
+    left: auto;
+    right: auto;
+    background: var(--card-background); /* Use variable */
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    display: flex;
+    gap: 2rem;
+    max-width: 1200px; /* Limit width */
+    margin-left: auto; /* Center the card */
+    margin-right: auto; /* Center the card */
+    width: 90%;
+    transform: translateY(80px); /* Lift the card up to overlap hero slightly */
+    z-index: 500; /* Ensure card is above the hero background */
+}
+
+.emergency-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 280px; /* Minimum width for sections */
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-color-dark); /* Use variable */
+}
+
+.emergency-section:first-child {
+    border-right: 1px solid var(--border-color); /* Use variable */
+    padding-right: 2rem;
+}
+
+.emergency-section:last-child {
+    padding-left: 2rem;
+}
+
+.blood-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    width: 100%; /* Ensure buttons take full width */
+}
+
+.blood-type-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* Responsive grid */
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.blood-type {
+    background-color: var(--background-color); /* Use variable */
+    border: 1px solid var(--border-color); /* Use variable */
+    border-radius: 10px;
+    padding: 0.7rem;
+    text-align: center;
+    font-weight: 700;
+    color: var(--text-color-dark); /* Use variable */
+    transition: all var(--animation-duration) ease;
+    cursor: pointer;
+}
+
+.blood-type:hover {
+    background-color: var(--primary-color); /* Use variable */
+    color: white;
+    border-color: var(--primary-color); /* Use variable */
+}
+
+.blood-type.selected {
+    background-color: var(--primary-color); /* Use variable */
+    color: white;
+    border-color: var(--primary-color); /* Use variable */
+    box-shadow: 0 2px 4px rgba(var(--primary-color-rgb), 0.2); /* Use RGB variable */
+}
+
+.location-search {
+    display: flex;
+    align-items: center;
+    background-color: #f1f3f5;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.location-search input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 0.5rem;
+    outline: none;
+    font-size: 1rem;
+    color: var(--text-color-dark); /* Use variable */
+}
+
+.location-search button {
+    background-color: var(--primary-color); /* Use variable */
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all var(--animation-duration) ease;
+}
+
+.location-search button:hover {
+    background-color: var(--primary-dark); /* Use variable */
+}
+
+#map {
+    height: 300px; /* Set a default height for the map */
+    width: 100%;
+    margin-top: 1.5rem; /* Space above map */
+    border-radius: 8px;
+}
+
+#searchResults {
+    margin-top: 1.5rem;
+}
+
+.result-card {
+    border: 1px solid var(--border-color); /* Use variable */
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: var(--background-color); /* Use variable */
+}
+
+/* Pulse Animation (as provided) */
+.pulse {
+    width: 70px;
+    height: 70px;
+    background-color: rgba(var(--primary-color-rgb), 0.8);
+    border-radius: 50%;
+    position: absolute;
+    animation: pulse 2s infinite;
+    opacity: 0;
+    z-index: 0;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(0);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+.pulse-1 {
+    animation-delay: 0s;
+    top: 50%; /* Position relative to image container */
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pulse-2 {
+    animation-delay: 0.5s;
+     top: 50%; /* Position relative to image container */
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.pulse-3 {
+    animation-delay: 1s;
+     top: 50%; /* Position relative to image container */
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* Floating Elements (as provided) */
+.floating-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.floating-element {
+    position: absolute;
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+    border-radius: 50%;
+    animation: float 10s infinite ease-in-out; /* Added float animation */
+}
+
+/* Example float animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+    }
+    50% {
+        transform: translateY(-20px) translateX(10px);
+    }
+}
+
+
+.element-1 {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.element-2 {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    left: 15%;
+    animation-delay: 2s;
+}
+
+.element-3 {
+    width: 150px;
+    height: 150px;
+    top: 20%;
+    right: 20%;
+    animation-delay: 4s;
+}
+
+/* Modals */
+.modal {
+    display: none; /* Controlled by JS */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay */
+    z-index: 2000;
+    display: flex; /* Use flexbox to center content */
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--animation-duration) ease, visibility var(--animation-duration) ease;
+}
+
+.modal.show {
+    display: flex; /* Override display: none when .show is added by JS */
+    opacity: 1;
+    visibility: visible;
+}
+
+
+.modal-content {
+    background-color: var(--card-background); /* Use variable */
+    padding: 2rem;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: relative;
+    transform: translateY(-50px); /* Start slightly above */
+    opacity: 0;
+    transition: transform var(--animation-duration) ease-out, opacity var(--animation-duration) ease-out;
+}
+
+.modal.show .modal-content {
+    transform: translateY(0); /* Slide into place */
+    opacity: 1;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #999;
+    transition: color var(--animation-duration) ease;
+}
+
+.close-modal:hover {
+    color: var(--primary-color); /* Use variable */
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-color-dark); /* Use variable */
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color); /* Use variable */
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color var(--animation-duration) ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color); /* Use variable */
+    box-shadow: 0 0 5px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.modal-footer {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.modal-footer p {
+    margin-top: 1rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.modal-footer a {
+    color: var(--primary-color); /* Use variable */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+
+/* Footer Section */
+.footer-section {
+    background-color: var(--card-background); /* Use variable */
+    padding: 4rem 0 1rem;
+    margin-top: 15rem; /* Adjusted margin-top to account for emergency-card overlap */
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.footer-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.footer-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.footer-col {
+    flex: 1;
+    min-width: 230px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 0.5rem;
+}
+
+.footer-description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.social-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    background-color: #f1f3f5;
+    border-radius: 50%;
+    color: var(--primary-color); /* Use variable */
+    transition: all var(--animation-duration) ease;
+}
+
+.social-icon:hover {
+    background-color: var(--primary-color); /* Use variable */
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+.footer-heading {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-color-dark); /* Use variable */
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.footer-heading:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 40px;
+    height: 3px;
+    background-color: var(--primary-color); /* Use variable */
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-links a {
+    color: #555;
+    text-decoration: none;
+    transition: color var(--animation-duration) ease, padding-left var(--animation-duration) ease;
+    position: relative;
+    padding-left: 15px; /* Space for bullet */
+}
+
+.footer-links a:before {
+    content: '›'; /* Custom bullet */
+    position: absolute;
+    left: 0;
+    color: var(--primary-color); /* Use variable */
+    font-weight: bold;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color); /* Use variable */
+    padding-left: 20px; /* Slide effect on hover */
+}
+
+.contact-info {
+    list-style: none;
+    padding: 0;
+}
+
+.contact-info li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+.contact-info i {
+    margin-right: 10px;
+    color: var(--primary-color); /* Use variable */
+    min-width: 20px; /* Ensure icons align */
+    text-align: center;
+}
+
+.newsletter {
+    margin-top: 2rem;
+}
+
+.newsletter h4 {
+    font-size: 1rem;
+    color: var(--text-color-dark); /* Use variable */
+    margin-bottom: 1rem;
+}
+
+.newsletter-form {
+    display: flex;
+    border-radius: 50px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    background-color: var(--background-color); /* Background for input area */
+}
+
+.newsletter-form input {
+    flex: 1;
+    padding: 0.8rem 1rem;
+    border: none;
+    outline: none;
+    font-size: 0.9rem;
+    background: transparent; /* Make input background transparent */
+}
+
+.newsletter-form button {
+    background-color: var(--primary-color); /* Use variable */
+    color: white;
+    border: none;
+    padding: 0 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color var(--animation-duration) ease;
+}
+
+.newsletter-form button:hover {
+    background-color: var(--primary-dark); /* Use variable */
+}
+
+.footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.copyright {
+    color: #777;
+    font-size: 0.9rem;
+}
+
+.footer-bottom-links {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-bottom-links a {
+    color: #555;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color var(--animation-duration) ease;
+}
+
+.footer-bottom-links a:hover {
+    color: var(--primary-color); /* Use variable */
+}
+
+/* Chatbot Styles */
+.chatbot-container {
+    position: fixed;
+    bottom: 80px; /* Position above the toggle button */
+    right: 20px;
+    width: 300px;
+    background: var(--card-background); /* Use variable */
+    border: 1px solid var(--border-color); /* Use variable */
+    border-radius: 10px;
+    display: none; /* Hidden by default, controlled by JS */
+    flex-direction: column;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 9999;
+    overflow: hidden; /* Ensure content stays within border-radius */
+}
+
+.chat-header {
+    background: var(--primary-color); /* Use variable */
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: grab; /* Indicate header can be dragged */
+}
+
+.chat-body {
+    height: 200px; /* Fixed height */
+    overflow-y: auto;
+    padding: 10px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Chat Message Styling (basic) */
+.chat-message {
+    max-width: 80%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    word-break: break-word;
+}
+
+.chat-message.user {
+    align-self: flex-end;
+    background-color: #e6f2ff; /* Light blue */
+}
+
+.chat-message.bot {
+    align-self: flex-start;
+    background-color: #f1f1f1; /* Light gray */
+}
+
+.chat-footer {
+    display: flex;
+    border-top: 1px solid var(--border-color); /* Use variable */
+}
+
+.chat-footer input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.chat-footer button {
+    border: none;
+    background: var(--primary-color); /* Use variable */
+    color: white;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color var(--animation-duration) ease;
+}
+
+.chat-footer button:hover {
+    background-color: var(--primary-dark); /* Use variable */
+}
+
+.chatbot-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary-color); /* Use variable */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    display: flex; /* Use flex to center content */
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    cursor: pointer;
+    z-index: 9999;
+    transition: transform var(--animation-duration) ease, background-color var(--animation-duration) ease;
+}
+
+.chatbot-toggle:hover {
+    background-color: var(--primary-dark); /* Use variable */
+    transform: scale(1.05);
+}
+
+.close-chat {
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+    font-weight: normal;
+    transition: color var(--animation-duration) ease;
+}
+
+.close-chat:hover {
+     color: #ccc; /* Lighter color on hover */
+}
+
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+    nav, .hero-content, .emergency-card, .footer-container {
+        padding: 1rem 3%; /* Adjust padding on slightly smaller screens */
+    }
+}
+
+@media (max-width: 992px) {
+    .nav-links {
+         gap: 1rem; /* Reduce gap in nav links */
+         justify-content: flex-start; /* Align links to the start */
+         margin-right: 1rem;
+    }
+
+    .nav-links .nav-item p {
+        left: 0; /* Align tooltip to the left on smaller screens */
+        transform: translateX(0);
+    }
+
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 80px; /* Adjust padding for smaller header */
+    }
+
+    .hero-text {
+        padding-right: 0;
+        margin-bottom: 2rem;
+        min-width: unset; /* Remove min-width */
+    }
+
+    .hero-image {
+         padding-left: 0;
+         margin-bottom: 2rem;
+         min-width: unset; /* Remove min-width */
+    }
+
+
+    .hero-buttons {
+        justify-content: center;
+    }
+
+    .emergency-card {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 1.5rem;
+        margin-top: 6rem; /* Adjust overlap margin */
+        transform: translateY(60px); /* Adjust overlap position */
+    }
+
+    .emergency-section:first-child {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color); /* Use variable */
+        padding-right: 0;
+        padding-bottom: 2rem;
+    }
+
+    .emergency-section:last-child {
+        padding-left: 0;
+    }
+
+    .footer-row {
+        gap: 3rem;
+    }
+
+    .footer-col {
+        flex: 1 0 calc(50% - 3rem); /* Two columns per row */
+    }
+
+    .footer-section {
+        margin-top: 12rem; /* Adjust footer margin-top */
+    }
+
+    #map {
+        height: 250px; /* Smaller map height */
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 5%;
+    }
+
+    .logo {
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    /* Example of a hamburger menu toggle - requires JS to show/hide .nav-links */
+    /* You would need to add a hamburger icon to your HTML */
+    /*
+    .menu-toggle {
+        display: block; // Show the toggle
+    }
+    .nav-links {
+        display: none; // Hide nav links by default
+        flex-direction: column;
+        width: 100%;
+        gap: 0.5rem;
+        text-align: center;
+    }
+    .nav-links.active { // Class added by JS
+        display: flex;
+    }
+    */
+
+    .auth-buttons {
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+     .auth-buttons .btn {
+         flex: 1; /* Make buttons take equal width */
+     }
+
+
+    .hero {
+        padding-top: 120px; /* More padding for larger header */
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .blood-type-grid {
+        grid-template-columns: repeat(auto-fit, minmax(50px, 1fr)); /* Even smaller grid items */
+    }
+
+    .emergency-card {
+        padding: 1rem;
+        margin-top: 4rem; /* Adjust overlap margin */
+        transform: translateY(40px); /* Adjust overlap position */
+    }
+
+
+    .footer-col {
+        flex: 1 0 100%; /* Single column per row */
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.8rem;
+    }
+
+    .footer-bottom-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+     .footer-section {
+         margin-top: 8rem; /* Adjust footer margin-top */
+     }
+
+     #map {
+         height: 200px; /* Even smaller map height */
+     }
+
+     .chatbot-container {
+         width: 90%; /* Make chatbot wider on small screens */
+         right: 5%;
+         bottom: 70px; /* Adjust position */
+     }
+
+     .chatbot-toggle {
+         bottom: 10px; /* Adjust position */
+         right: 10px;
+     }
+
+     .modal-content {
+          padding: 1.5rem; /* Adjust modal padding */
+     }
+}
+
+@media (max-width: 480px) {
+     .hero-title {
+         font-size: 2rem;
+     }
+
+     .hero-buttons .btn {
+         padding: 0.6rem 1.5rem;
+         font-size: 1rem;
+     }
+
+     .blood-type-grid {
+        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); /* Make grid items fit on tiny screens */
+     }
+
+     .emergency-card {
+         padding: 0.8rem;
+     }
+
+     .modal-content {
+          padding: 1rem;
+     }
+}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us - Donation Club</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="aboutus.css">
+</head>
+<body>
+  <header>
+    <div class="nav-container">
+        <nav>
+            <div class="logo">
+                <div class="drop">❤️</div>
+                <div class="logo-text">Life<span>Link</span></div>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="index.html">Home</a>
+                    <p>Welcome to the LifeLink home page. Find blood donors quickly and easily.</p>
+                </li>
+                <li class="nav-item">
+                    <a href="aboutus.html">About Us</a>
+                    <p>We connect donors with recipients and support emergency medical needs.</p>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Donations</a>
+                    <p>View or manage blood donations and help save lives.</p>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Emergency</a>
+                    <p>In an emergency? Find the nearest donor or hospital right now.</p>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Contact</a>
+                    <p>Reach out to us for help or support anytime.</p>
+                </li>
+            </ul>
+            <!-- <div class="auth-section">
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" onclick="openModal('loginModal')">Login</button>
+                    <button class="btn btn-primary" onclick="openModal('registerModal')">Register</button>
+                </div>
+                <div class="user-profile" id="user-profile">
+                    <span class="user-email" id="user-email"></span>
+                    <button class="logout-button" id="logout-button">Logout</button>
+                </div>
+            </div> -->
+        </nav>
+    </div>
+
+  <section id="about-us" class="content-section">
+    <div class="container">
+      <h2>About Our Mission</h2>
+      <div class="about-content">
+        <p>
+            Welcome to <strong>LifeLink</strong>! Our mission is to connect life-saving blood donors with those in urgent need and to help locate emergency services quickly. Together, we can make every second count and every drop matter.
+        </p>
+        <p>
+            Our platform offers a simple and reliable way to donate blood and request emergency help. We connect donors with verified recipients and nearby medical facilities, ensuring your contribution reaches those who need it most—quickly and safely.
+        </p>
+        <p>
+          Join us in building a more compassionate world, one act of kindness at a time.
+        </p>
+      </div>
+
+      <div class="values">
+        <h3>Our Core Values</h3>
+        <ul>
+          <li><span>❤️</span> Compassion: Prioritizing the lives and well-being of those in medical need.</li>
+          <li><span>📍</span> Reliability: Ensuring timely and accurate connections between donors and recipients.</li>
+          <li><span>🧭</span> Accessibility: Making blood and emergency support easy to find and access for everyone.</li>
+          <li><span>⚡</span> Urgency: Responding swiftly to critical situations where every moment counts.</li>
+        </ul>
+      </div>
+      
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-content">
+       <div class="footer-left">
+           <p>© LifeLink <span id="year"></span>. All Rights Reserved.</p>
+           <p>Designed with care by LifeLink.</p>
+       </div>
+       <div class="footer-right">
+            <a href="#terms" class="footer-link">Terms & Conditions</a> |
+            <a href="#privacy" class="footer-link">Privacy Policy</a>
+       </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
